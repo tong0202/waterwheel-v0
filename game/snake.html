@@ -18,3 +18,16 @@
   #overlay small { display:block; font-size:15px; color:#ccc; margin-top:8px; }
 </style>
 </head>
+<body>
+  <h1>水车贪吃蛇</h1>
+  <div id="score">得分：0</div>
+  <canvas id="board" width="400" height="400"></canvas>
+  <div id="overlay"></div>
+  <div id="tip">方向键 或 WASD 控制方向<br>空格 暂停 · 回车 重新开始</div>
+<script>
+const canvas=document.getElementById("board");
+const ctx=canvas.getContext("2d");
+const scoreEl=document.getElementById("score");
+const overlay=document.getElementById("overlay");
+const GRID=20, CELLS=canvas.width/GRID;
+let snake,dir,nextDir,food,score,timer,speed,paused,dead;
