@@ -1,47 +1,51 @@
-# 第一块叶片 / waterwheel-v0 —— 证据与边界
+# 水车 v1：自主建造贪吃蛇 —— 证据与边界
 
 生成时间：2026-07-05
 repo：https://github.com/tong0202/waterwheel-v0
+模式：纯自主，无人干预，慢慢建
 
-## 要证明的那一件事
+## 从 +1 到真任务
 
-网络里有没有一条"不用我推、自己会流"的河？如果有，水车架上去就能自转。
+第一块叶片（v0）证明了免费定时器能让状态自己走一格（count+1）。
+v1 把"+1"换成一件真活：**自主建一个能玩的贪吃蛇游戏**。
 
-第一块叶片只回答这一个问题，不多回答一个字。
+游戏被拆成 9 块（build_plan.py）：
+html头 → css → body → reset → food → tick → draw → input → boot。
+水车每 tick 拼一块，9 tick 后 game/snake.html 成为完整可玩游戏。
 
-## 已证明（本轮）
+## 机制
 
-1. **全链路通**：GitHub Actions 冷启动，读状态 → 计数+1 → 用父哈希链写回 repo。
-   - 首格证据：count=1, parent_hash=创世全0, self_hash=6483c571..., run=28734313875
-2. **哈希链护栏有效**（本地反证）：偷改 count 不改 self_hash，下一 tick 立即 PARENT HASH MISMATCH 退出码2。中间格不可伪造。
-3. **自流现象真实存在**（旁证，来自姊妹 repo qimingxing-m3-executor-test）：
-   - 9.5 天内 228 次 `event=schedule` 自触发，成功率 100%，人工仅干预 9 次。
-   - 这是"免费定时器无人干预自触发"的真实、可查、大样本证据。
+每个 tick：
+1. 读状态 state/build.json，校验状态哈希未被篡改（否则退出2）
+2. 校验已建的 game/snake.html 哈希未被篡改（否则退出3）
+3. 取配方第 step 块，拼到游戏文件末尾
+4. 用父哈希链写新状态，commit + push
 
-## 已量化的真实缺陷（这是重点，不是失败）
+## 已本地验证（部署前）
 
-姊妹 repo 实测：cron 写 `*/5`（应每小时12次），**实际平均每小时仅 1 次**，
-间隔中位数 50 分钟，最长断 4.4 小时。
+- 9 tick 全跑通，snake.html 3550 字节，结构自检全过（doctype/canvas/tick函数/script配对）
+- 反证1：偷改状态 count → 下一 tick 退出2（状态哈希护栏）
+- 反证2：偷改游戏文件 → 下一 tick 退出3（游戏文件护栏）
+- 部署前已清空状态与游戏文件，远端从空冷启动
 
-结论：**单条免费河，真的在流，但又慢又不匀。** 这从实测层面证明：
-单条河撑不起稳定时钟 → 需要"齿轮群组"（多条河错开相位拼快节拍）。
-这正是下一步的工程依据，不是靠推理得来的。
+## 验收方式（无人干预，自己看它长出来）
+
+游戏一块块出现在：
+https://github.com/tong0202/waterwheel-v0/blob/master/game/snake.html
+
+看它是不是自己建的（关键）：
+```
+gh run list --repo tong0202/waterwheel-v0 --json event,createdAt,conclusion
+```
+只要 game/snake.html 的每次增长都对应 event=schedule 的 run，
+就是"免费定时器无人干预、自主把一个真任务推进到完成"的铁证。
+
+建完后本地玩：把 snake.html 存下来双击打开即可。
 
 ## 未证明（不得宣称）
 
-- 未证明网络介质自己在算。真正在算的是 GitHub 的服务器（一个端点）。
-- 未证明无端点计算。关掉 GitHub Actions，水车就停。
-- 未证明自主/生命/意识。这只是一个会自己+1的计数器。
-- 本轮"自转"的 schedule 证据在姊妹 repo，本 repo 的 schedule 自触发格
-  正在累积中（见下）。
-
-## 待收（本 repo 自转格）
-
-本 repo 首格是 workflow_dispatch（手动点火，证明链路）。
-接下来不再人工干预，观察 state/counter.json 中出现
-`tick_trigger: schedule` 的格，即为本 repo 独立的冷启动自转证据。
-验收命令：
-```
-gh api repos/tong0202/waterwheel-v0/contents/state/counter.json -q .content | base64 -d
-gh run list --repo tong0202/waterwheel-v0 --json event,createdAt,conclusion
-```
+- 真正在跑的是 GitHub 的服务器（一个端点）。关掉它，水车停。
+- 建造计划（9块配方）是人写的。水车负责"自主推进"，不负责"自主创作"。
+- 不证明网络自算、无端点计算、自主创作、生命、意识。
+- 本轮证明的边界仅限：**免费定时器能让一个人类定义的真任务，
+  在无人干预下一步步自主推进到完成，全程哈希链可验、可复跑、断了能接。**
