@@ -59,3 +59,11 @@ function tick(){
   } else { snake.pop(); }
   draw();
 }
+function draw(){
+  ctx.fillStyle="#16213e"; ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle="#ff6b6b"; ctx.fillRect(food.x*GRID+2,food.y*GRID+2,GRID-4,GRID-4);
+  snake.forEach((s,i)=>{
+    ctx.fillStyle=i===0?"#4ecca3":"#3aa886";
+    ctx.fillRect(s.x*GRID+1,s.y*GRID+1,GRID-2,GRID-2);
+  });
+}
