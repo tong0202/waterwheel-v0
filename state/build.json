@@ -1,12 +1,12 @@
 {
-  "step": 5,
+  "step": 6,
   "total_steps": 9,
-  "last_stage": "05_food",
+  "last_stage": "06_tick",
   "done": false,
-  "game_sha256": "402adaef66344707efb6aaa5106d46c284afce96dad30d389387f6707c357519",
-  "parent_hash": "a7b17becf756c9d31d989d6a005d099551f7ab6aff22e2bb8f74c999219de5d6",
+  "game_sha256": "d3271a33bb21daec65ef7474647700d88b4e4efad0cd01746fec908d8afff306",
+  "parent_hash": "9962345d1436b02820649670bec4468ea4f2af640e6c7a6354f0367fc99f0049",
   "tick_trigger": "schedule",
-  "tick_run_id": "28746770846",
-  "tick_at": "2026-07-05T16:07:10.781958+00:00",
-  "self_hash": "9962345d1436b02820649670bec4468ea4f2af640e6c7a6354f0367fc99f0049"
+  "tick_run_id": "28749046624",
+  "tick_at": "2026-07-05T17:31:06.892682+00:00",
+  "self_hash": "a47cd19fdd50ee60e50152fb9292daaf2294619a7dce972157d4c4c4721f1386"
 }
