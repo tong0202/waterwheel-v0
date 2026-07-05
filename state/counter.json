@@ -1,0 +1,9 @@
+{
+  "count": 1,
+  "parent_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+  "tick_trigger": "workflow_dispatch",
+  "tick_run_id": "28734313875",
+  "tick_at": "2026-07-05T08:09:05.574968+00:00",
+  "history_len": 1,
+  "self_hash": "6483c5711669c828841eb013b9180bd7bf5a728210c3eead30805b8ef0b48c31"
+}
