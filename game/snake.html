@@ -67,3 +67,17 @@ function draw(){
     ctx.fillRect(s.x*GRID+1,s.y*GRID+1,GRID-2,GRID-2);
   });
 }
+function gameOver(){
+  dead=true; clearInterval(timer);
+  overlay.innerHTML="游戏结束<small>最终得分："+score+"<br>按 回车 重新开始</small>";
+  overlay.style.display="block";
+}
+document.addEventListener("keydown",e=>{
+  const k=e.key.toLowerCase();
+  if(k===" "){ e.preventDefault(); if(!dead) paused=!paused; return; }
+  if(k==="enter"){ reset(); return; }
+  const moves={arrowup:{x:0,y:-1},w:{x:0,y:-1},arrowdown:{x:0,y:1},s:{x:0,y:1},
+    arrowleft:{x:-1,y:0},a:{x:-1,y:0},arrowright:{x:1,y:0},d:{x:1,y:0}};
+  const m=moves[k];
+  if(m){ e.preventDefault(); if(m.x!==-dir.x||m.y!==-dir.y) nextDir=m; }
+});
