@@ -1,0 +1,111 @@
+# -*- coding: utf-8 -*-
+"""贪吃蛇游戏的建造配方：拆成 9 块，水车每 tick 拼一块。
+每块是一段文本，按顺序拼接后就是一个完整可玩的 snake.html。
+"""
+
+BUILD_PLAN = [
+    ("01_html_head", """<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>水车贪吃蛇</title>
+"""),
+
+    ("02_css", """<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#1a1a2e; color:#eee; font-family:"Microsoft YaHei",sans-serif;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    min-height:100vh; user-select:none; }
+  h1 { font-size:22px; margin-bottom:8px; color:#4ecca3; }
+  #score { font-size:18px; margin-bottom:12px; }
+  #board { background:#16213e; border:3px solid #4ecca3; border-radius:6px;
+    box-shadow:0 0 20px rgba(78,204,163,0.3); }
+  #tip { margin-top:14px; font-size:14px; color:#888; text-align:center; line-height:1.8; }
+  #overlay { position:absolute; font-size:26px; color:#ff6b6b; display:none; text-align:center; }
+  #overlay small { display:block; font-size:15px; color:#ccc; margin-top:8px; }
+</style>
+</head>
+"""),
+
+    ("03_body", """<body>
+  <h1>水车贪吃蛇</h1>
+  <div id="score">得分：0</div>
+  <canvas id="board" width="400" height="400"></canvas>
+  <div id="overlay"></div>
+  <div id="tip">方向键 或 WASD 控制方向<br>空格 暂停 · 回车 重新开始</div>
+<script>
+const canvas=document.getElementById("board");
+const ctx=canvas.getContext("2d");
+const scoreEl=document.getElementById("score");
+const overlay=document.getElementById("overlay");
+const GRID=20, CELLS=canvas.width/GRID;
+let snake,dir,nextDir,food,score,timer,speed,paused,dead;
+"""),
+
+    ("04_reset", """function reset(){
+  snake=[{x:10,y:10},{x:9,y:10},{x:8,y:10}];
+  dir={x:1,y:0}; nextDir={x:1,y:0};
+  score=0; speed=140; paused=false; dead=false;
+  overlay.style.display="none";
+  placeFood(); scoreEl.textContent="得分：0";
+  clearInterval(timer); timer=setInterval(tick,speed);
+}
+"""),
+
+    ("05_food", """function placeFood(){
+  while(true){
+    const fx=Math.floor(Math.random()*CELLS);
+    const fy=Math.floor(Math.random()*CELLS);
+    if(!snake.some(s=>s.x===fx&&s.y===fy)){ food={x:fx,y:fy}; return; }
+  }
+}
+"""),
+
+    ("06_tick", """function tick(){
+  if(paused||dead) return;
+  dir=nextDir;
+  const head={x:snake[0].x+dir.x, y:snake[0].y+dir.y};
+  if(head.x<0||head.x>=CELLS||head.y<0||head.y>=CELLS||
+     snake.some(s=>s.x===head.x&&s.y===head.y)){ gameOver(); return; }
+  snake.unshift(head);
+  if(head.x===food.x&&head.y===food.y){
+    score+=10; scoreEl.textContent="得分："+score; placeFood();
+    if(score%50===0&&speed>60){ speed-=12; clearInterval(timer); timer=setInterval(tick,speed); }
+  } else { snake.pop(); }
+  draw();
+}
+"""),
+
+    ("07_draw", """function draw(){
+  ctx.fillStyle="#16213e"; ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle="#ff6b6b"; ctx.fillRect(food.x*GRID+2,food.y*GRID+2,GRID-4,GRID-4);
+  snake.forEach((s,i)=>{
+    ctx.fillStyle=i===0?"#4ecca3":"#3aa886";
+    ctx.fillRect(s.x*GRID+1,s.y*GRID+1,GRID-2,GRID-2);
+  });
+}
+"""),
+
+    ("08_input", """function gameOver(){
+  dead=true; clearInterval(timer);
+  overlay.innerHTML="游戏结束<small>最终得分："+score+"<br>按 回车 重新开始</small>";
+  overlay.style.display="block";
+}
+document.addEventListener("keydown",e=>{
+  const k=e.key.toLowerCase();
+  if(k===" "){ e.preventDefault(); if(!dead) paused=!paused; return; }
+  if(k==="enter"){ reset(); return; }
+  const moves={arrowup:{x:0,y:-1},w:{x:0,y:-1},arrowdown:{x:0,y:1},s:{x:0,y:1},
+    arrowleft:{x:-1,y:0},a:{x:-1,y:0},arrowright:{x:1,y:0},d:{x:1,y:0}};
+  const m=moves[k];
+  if(m){ e.preventDefault(); if(m.x!==-dir.x||m.y!==-dir.y) nextDir=m; }
+});
+"""),
+
+    ("09_boot", """reset(); draw();
+</script>
+</body>
+</html>
+"""),
+]
