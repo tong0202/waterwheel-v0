@@ -1,12 +1,12 @@
 {
-  "step": 3,
+  "step": 4,
   "total_steps": 9,
-  "last_stage": "03_body",
+  "last_stage": "04_reset",
   "done": false,
-  "game_sha256": "7092c2fe02e01c4c2dd6cbe2633b0dfc0f154babc7dd0a98ded5b16466533715",
-  "parent_hash": "7e1d6f3834af2e0d1a5f05665da79c5e43815285b4c0c87c953b2e74e5638d3f",
+  "game_sha256": "1a013db8c157fadc3414beb98aa74e6a3c0e789de78732a36c488ffe3a7a829e",
+  "parent_hash": "be1b9dba1d2f5f621d94720a8256b07ebb5413a7279c15181664612fc97541ad",
   "tick_trigger": "schedule",
-  "tick_run_id": "28742176295",
-  "tick_at": "2026-07-05T13:21:08.441218+00:00",
-  "self_hash": "be1b9dba1d2f5f621d94720a8256b07ebb5413a7279c15181664612fc97541ad"
+  "tick_run_id": "28744745114",
+  "tick_at": "2026-07-05T14:55:30.152386+00:00",
+  "self_hash": "a7b17becf756c9d31d989d6a005d099551f7ab6aff22e2bb8f74c999219de5d6"
 }

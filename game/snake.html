@@ -31,3 +31,11 @@ const scoreEl=document.getElementById("score");
 const overlay=document.getElementById("overlay");
 const GRID=20, CELLS=canvas.width/GRID;
 let snake,dir,nextDir,food,score,timer,speed,paused,dead;
+function reset(){
+  snake=[{x:10,y:10},{x:9,y:10},{x:8,y:10}];
+  dir={x:1,y:0}; nextDir={x:1,y:0};
+  score=0; speed=140; paused=false; dead=false;
+  overlay.style.display="none";
+  placeFood(); scoreEl.textContent="得分：0";
+  clearInterval(timer); timer=setInterval(tick,speed);
+}
