@@ -39,3 +39,10 @@ function reset(){
   placeFood(); scoreEl.textContent="得分：0";
   clearInterval(timer); timer=setInterval(tick,speed);
 }
+function placeFood(){
+  while(true){
+    const fx=Math.floor(Math.random()*CELLS);
+    const fy=Math.floor(Math.random()*CELLS);
+    if(!snake.some(s=>s.x===fx&&s.y===fy)){ food={x:fx,y:fy}; return; }
+  }
+}
