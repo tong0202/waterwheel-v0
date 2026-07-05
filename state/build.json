@@ -1,0 +1,12 @@
+{
+  "step": 1,
+  "total_steps": 9,
+  "last_stage": "01_html_head",
+  "done": false,
+  "game_sha256": "78e7d70493a21028a7cb100459dc582f56258b8f8b82bb3a52652cd958a67f52",
+  "parent_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+  "tick_trigger": "schedule",
+  "tick_run_id": "28737685155",
+  "tick_at": "2026-07-05T10:26:41.304845+00:00",
+  "self_hash": "c0e233b7ebeebfefbc7ebb4624b8398fa114637f6f61ed248c74ad2de9e3d98d"
+}
